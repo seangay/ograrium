@@ -1,0 +1,89 @@
+---
+title: MU/TH/UR
+description: MU/TH/UR was a model 282 artificial intelligence operating system used aboard vessels in the Alien universe.
+tableOfContents: false
+head:
+  - tag: style
+    content: ":root { --sl-content-width: 80%; }"
+hero:
+  tagline: In space no one can hear you scream
+  image:
+    file: "@assets/mrOgre-fightsAnAlien.png"
+    alt: MrOgre in the suit, fighting an alien
+next: false
+prev: false
+---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+
+[MU/TH/UR](https://avp.fandom.com/wiki/MU/TH/UR_6000) was a model 282 artificial intelligence operating system used aboard vessels in the Alien universe.
+
+While MU/TH/UR was a 2.1 terabyte mainframe that monitored the Nostromo's flight and environmental functions and this version is a little different.
+
+Our version is starting its life as an Unraid server:
+
+The machine has been purpose built for the task to replace an existing machine `FRANKENMONKEY`. While he has served us well, his time is almost over. A slow i3 with spinning drives and now pooled storage etc just won't cut it in today's world.
+
+<CardGrid stagger>
+  <Card title="Hardware" icon="laptop">
+    - i5-14500 2.6GHz 14 Core processor
+    - 64GB (2 x 32GB) DDR4-3200
+    - 4 x 16TB WD Ultrastar 7200 RPM Internal Hard drive
+    - 2 x 1TB Samsung 990 EVO NVME SSD
+    - 1 x 1TB Samsung 970 EVO Pro NVME SSD
+  
+    [PC Part Picker](https://au.pcpartpicker.com/list/yYpPYd)
+  </Card>
+  <Card title="Shares" icon="seti:folder">
+    | Name      | Storage                           |  SMB   |
+    | --------- | --------------------------------- | :----: |
+    | appdata   | cache-mirror                      |   -    |
+    | data      | cache-write -> array              | Secure |
+    | downloads | cache-write -> array              |   -    |
+    | movies    | array                             | Secure |
+    | series    | array                             | Secure |
+    | system    | cache-mirror                      |   -    |
+
+    <div class="table-notes">
+      <details>
+        <summary>Storage details</summary>
+        <ul>
+          <li>**movies** writes only to `disk 1`</li>
+          <li>**series** writes only to `disk 2`</li>
+          <li>**data** & **downloads** write only to `disk 3`</li>
+        </ul>
+        <p></p>
+      </details>
+    </div>
+
+  </Card>
+  <Card title="Logical Drives" icon="seti:db">
+    3 logical drives configured:
+
+    1. **Array of 4 devices**: 48TB array;
+        - 3 x 16TB Storage HDD
+        - 1 x 16TB Parity HDD
+    1. **Pool device**: `cache-mirror` (container app data etc)
+        - 2 x 1TB 990 EVO NVME drives
+    1. **Pool device**: `cache-write` (quick writes without redundancy)
+        - 1 x 1TB 970 EVO Plus drive
+
+  </Card>
+</CardGrid>
+
+## Physical Disks
+
+Detail below is a capture from the main unraid interface
+
+```
+[0:0:0:0]	disk    SanDisk  Cruzer Glide     1.00             /dev/sda   63.0GB
+
+[5:0:0:0]	disk    ATA      WUH721816ALE6L4  W232             /dev/sdb   16.0TB
+[6:0:0:0]	disk    ATA      WUH721816ALE6L4  W232             /dev/sdc   16.0TB
+[7:0:0:0]	disk    ATA      WUH721816ALE6L4  W232             /dev/sdd   16.0TB
+[8:0:0:0]	disk    ATA      WUH721816ALE6L4  W232             /dev/sde   16.0TB
+
+[N:0:4:1]	disk    Samsung SSD 970 EVO Plus 1TB__1            /dev/nvme0n1  1.00TB
+[N:1:1:1]	disk    Samsung SSD 990 EVO 1TB__1                 /dev/nvme1n1  1.00TB
+[N:2:1:1]	disk    Samsung SSD 990 EVO 1TB__1                 /dev/nvme2n1  1.00TB
+```
